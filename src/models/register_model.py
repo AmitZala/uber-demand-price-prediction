@@ -4,12 +4,12 @@ import dagshub
 import logging
 from pathlib import Path
 from mlflow.client import MlflowClient
-
 import dagshub
 dagshub.init(repo_owner='AmitZala', repo_name='uber-demand-price-prediction', mlflow=True)
 
+
 # set the mlflow tracking uri
-mlflow.set_tracking_uri("https://dagshub.com/api/v1/repo-buckets/s3/AmitZala")
+mlflow.set_tracking_uri("https://dagshub.com/AmitZala/uber-demand-price-prediction.mlflow")
 
 # create a logger
 logger = logging.getLogger("register_model")
