@@ -106,27 +106,32 @@ if __name__ == "__main__":
         mlflow.log_input(training_data, "training")
         mlflow.log_input(validation_data, "validation")
         
-        # model signature
+        # model signature (optional: kept for reference, but not used in logging)
         model_signature = mlflow.models.infer_signature(X_test_encoded, y_pred)
-        
-        # log sklearn model
-        logged_model = mlflow.sklearn.log_model(model, "demand_prediction", 
-                                 signature=model_signature,
-                                 pip_requirements="requirements.txt")
-        
-        
-    # get the run id and arifact uri
-    run_id = logged_model.run_id
-    artifact_path = logged_model.artifact_path
-    model_uri = logged_model.model_uri 
+
+        # Instead of using mlflow.sklearn.log_model (which hits unsupported
+        # Model Registry / logged-model endpoints on DagsHub),
+        # just log the already trained joblib model as a plain artifact.
+        mlflow.log_artifact(str(model_path), artifact_path="demand_prediction")
+
+        # Get info about the current run so we can build a model URI manually
+        run = mlflow.active_run()
+        run_id = run.info.run_id
+        artifact_path = "demand_prediction"
+        model_uri = f"runs:/{run_id}/{artifact_path}"
+
+    # after the 'with mlflow.start_run(...)' block finishes, run_id etc. still exist
     logger.info("Mlflow logging complete")
-    
+
     # save to json file
     json_file_save_path = root_path / "run_information.json"
-    save_run_information(run_id=run_id,
-                         artifact_path=artifact_path,
-                         model_uri=model_uri,
-                         path=json_file_save_path)
+    save_run_information(
+        run_id=run_id,
+        artifact_path=artifact_path,
+        model_uri=model_uri,
+        path=json_file_save_path
+    )
     logger.info("Run information saved successfully")
+
     
     

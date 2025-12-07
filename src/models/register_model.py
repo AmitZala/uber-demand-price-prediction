@@ -9,7 +9,7 @@ dagshub.init(repo_owner='AmitZala', repo_name='uber-demand-price-prediction', ml
 
 
 # set the mlflow tracking uri
-mlflow.set_tracking_uri("https://dagshub.com/AmitZala/uber-demand-price-prediction.mlflow")
+mlflow.set_tracking_uri("https://dagshub.com/AmitZala/uber-demand-price-prediction.mlflow ")
 
 # create a logger
 logger = logging.getLogger("register_model")

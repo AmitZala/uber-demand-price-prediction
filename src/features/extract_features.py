@@ -84,7 +84,7 @@ if __name__ == "__main__":
     # read the data
     df_final = pd.read_csv(data_path, parse_dates=["tpep_pickup_datetime"])
     logger.info("Data read for cluster predictions")
-    # perform predictions and assign clusters
+    # perform predictions and assign clusters (order must match CSV file order: pickup_longitude, pickup_latitude)
     location_subset = df_final.loc[:,["pickup_longitude","pickup_latitude"]]
     # scale the input data
     scaled_location_subset = scaler.transform(location_subset)
